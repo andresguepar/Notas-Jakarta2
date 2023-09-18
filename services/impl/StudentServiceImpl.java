@@ -1,8 +1,9 @@
 package com.example.notasjakarta.services.impl;
 
-import com.example.demo.domain.model.Student;
-import com.example.demo.reposistories.impl.StudentRepositoryLogicImpl;
-import com.example.demo.services.StudentService;
+
+import com.example.notasjakarta.domain.model.Student;
+import com.example.notasjakarta.repositories.impl.StudentRepositoryLogicImpl;
+import com.example.notasjakarta.services.StudentService;
 
 import java.util.List;
 public class StudentServiceImpl implements StudentService {

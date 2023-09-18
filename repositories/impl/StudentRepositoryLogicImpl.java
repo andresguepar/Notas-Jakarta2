@@ -1,9 +1,9 @@
 package com.example.notasjakarta.repositories.impl;
 
-import com.example.demo.domain.enums.Career;
-import com.example.demo.domain.model.Student;
-import com.example.demo.exceptions.UniversityException;
-import com.example.demo.reposistories.Repository;
+
+import com.example.notasjakarta.domain.model.Student;
+import com.example.notasjakarta.exceptions.UniversityException;
+import com.example.notasjakarta.repositories.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,9 @@ public class StudentRepositoryLogicImpl implements Repository<Student> {
     private List<Student> students;
 
     public StudentRepositoryLogicImpl() {
-        Student s1 = new Student(1L,"Monica", Career.SOFTWARE);
-        Student s2 = new Student(2L,"Pepe", Career.SOFTWARE);
-        Student s3 = new Student(3L,"Juan", Career.INDUSTRIAL);
+        Student s1 = new Student(1L,"Lexa","lexa@email.com","1" );
+        Student s2 = new Student(2L,"Lulu","lulu@email.com","3" );
+        Student s3 = new Student(3L,"Salmon","sal@email.com","2" );
         students = new ArrayList<>(List.of(s1, s2, s3));
     }
 

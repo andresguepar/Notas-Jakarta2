@@ -1,7 +1,6 @@
 package com.example.notasjakarta.conntrollers;
 
 
-import com.example.notasjakarta.domain.enums.Career;
 import com.example.notasjakarta.domain.model.Student;
 import com.example.notasjakarta.repositories.impl.StudentRepositoryLogicImpl;
 import com.example.notasjakarta.services.StudentService;
@@ -48,8 +47,10 @@ public class StudentController extends HttpServlet {
         resp.setContentType("text/html");
 
         String name = req.getParameter("name");
-        String career = req.getParameter("career");
-        Student student = new Student(4L, name, Career.fromValue(career));
+        String email = req.getParameter("email");
+        String semester = req.getParameter("semester");
+
+        Student student = new Student(4L, name,email,semester);
         service.guardar(student);
         System.out.println(service.listar());
 
@@ -66,7 +67,8 @@ public class StudentController extends HttpServlet {
 
             out.println("        <ul>");
             out.println("            <li>Name: " + name + "</li>");
-            out.println("            <li>Career: " + career + "</li>");
+            out.println("            <li>Email: " + email + "</li>");
+            out.println("            <li>Semester: " + semester + "</li>");
             out.println("        </ul>");
             out.println("    </body>");
             out.println("</html>");

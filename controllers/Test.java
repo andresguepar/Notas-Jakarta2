@@ -15,18 +15,43 @@ public class Test extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
             IOException {
+        // Configuración de la respuesta HTTP como tipo de contenido HTML
         resp.setContentType("text/html");
+
+        // Obtención del método HTTP utilizado en la solicitud
         String metodoHttp = req.getMethod();
+
+        // Obtención de la URI de la solicitud
         String requestUri = req.getRequestURI();
+
+        // Obtención de la URL completa de la solicitud
         String requestUrl = req.getRequestURL().toString();
+
+        // Obtención del contexto de la aplicación web
         String contexPath = req.getContextPath();
+
+        // Obtención de la ruta del servlet en la solicitud
         String servletPath = req.getServletPath();
+
+        // Obtención de la dirección IP del cliente que realizó la solicitud
         String ipCliente = req.getRemoteAddr();
+
+        // Obtención de la dirección IP local del servidor
         String ip = req.getLocalAddr();
+
+        // Obtención del puerto local del servidor
         int port = req.getLocalPort();
+
+        // Obtención del esquema de la solicitud (HTTP o HTTPS)
         String scheme = req.getScheme();
+
+        // Obtención del encabezado 'host' de la solicitud
         String host = req.getHeader("host");
+
+        // Construcción de la URL completa a partir de los componentes anteriores
         String url = scheme + "://" + host + contexPath + servletPath;
+
+        // Construcción de otra URL completa que incluye la dirección IP y el puerto local
         String url2 = scheme + "://" + ip + ":" + port + contexPath + servletPath;
         try (PrintWriter out = resp.getWriter()) {
             out.println("<!DOCTYPE html>");

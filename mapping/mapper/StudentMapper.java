@@ -11,7 +11,7 @@ public class StudentMapper {
         return new StudentDto(source.getId(),
                 source.getName(),
                 source.getEmail(),
-                source.getSemestre()
+                source.getSemester()
         );
     }
 
@@ -19,7 +19,7 @@ public class StudentMapper {
         return new Student(source.id(),
                 source.name(),
                 source.email(),
-                source.semestre());
+                source.semester());
     }
 
     public static List<Student> mapFrom(List<StudentDto> source){

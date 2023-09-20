@@ -1,6 +1,5 @@
 package com.example.notasjakarta.repositories.impl;
 
-import com.example.notasjakarta.domain.model.Student;
 import com.example.notasjakarta.domain.model.Subject;
 import com.example.notasjakarta.domain.model.Teacher;
 import com.example.notasjakarta.exceptions.UniversityException;

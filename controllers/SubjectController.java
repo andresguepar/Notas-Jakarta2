@@ -1,6 +1,5 @@
 package com.example.notasjakarta.controllers;
 
-import com.example.notasjakarta.repositories.impl.StudentRepositoryLogicImpl;
 import com.example.notasjakarta.repositories.impl.SubjectRepositoryLogicImpl;
 import com.example.notasjakarta.services.SubjectService;
 import com.example.notasjakarta.services.impl.SubjectServiceImpl;

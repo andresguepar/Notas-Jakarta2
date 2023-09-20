@@ -1,7 +1,6 @@
 package com.example.notasjakarta.services.impl;
 
 import com.example.notasjakarta.domain.model.Subject;
-import com.example.notasjakarta.repositories.impl.StudentRepositoryLogicImpl;
 import com.example.notasjakarta.repositories.impl.SubjectRepositoryLogicImpl;
 import com.example.notasjakarta.services.SubjectService;
 

@@ -1,14 +1,14 @@
-package com.example.notasjakarta.services;
+package com.example.notasjakarta.repositories;
 
 import com.example.notasjakarta.domain.model.Subject;
 import com.example.notasjakarta.mapping.dtos.SubjectDto;
 
 import java.util.List;
 
-public interface SubjectService {
+public interface SubjectRepository<T>{
     List<SubjectDto> listar();
 
-    Subject porId(Long id);
+    T porId(Long id);
 
     void guardar(Subject t);
 

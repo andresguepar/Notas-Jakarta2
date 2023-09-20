@@ -5,6 +5,7 @@ import com.example.notasjakarta.exceptions.UniversityException;
 import com.example.notasjakarta.repositories.impl.StudentRepositoryLogicImpl;
 import com.example.notasjakarta.services.StudentService;
 import com.example.notasjakarta.services.impl.StudentServiceImpl;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,14 +24,33 @@ public class Id extends HttpServlet {
         service = new StudentServiceImpl(studentRepository);
     }
 
-  /*  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
+            IOException {
+        Long id = Long.valueOf(req.getParameter("id"));
 
-        // Hello
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>Students</h1>");
-        out.println(service.porId());
-        out.println("</body></html>");
-    }*/
+        try {
+            Student student = service.porId(id);
+
+            try (PrintWriter out = resp.getWriter()) {
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println(" <head>");
+                out.println(" <meta charset=\"UTF-8\">");
+                out.println(" <title>Id correcto</title>");
+                out.println(" </head>");
+                out.println(" <body>");
+                out.println(" <h1>Id correcto!</h1>");
+                out.println(" <h3>Hola " + student.getName() + " has iniciado sesión con éxito!</h3>");
+                out.println(" </body>");
+                out.println("</html>");
+
+            }
+
+        } catch (UniversityException e) {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Lo sentimos no esta autorizado " +
+                    "para ingresar a esta página!");
+
+        }
+    }
 }

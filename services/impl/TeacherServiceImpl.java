@@ -1,6 +1,7 @@
 package com.example.notasjakarta.services.impl;
 
 import com.example.notasjakarta.domain.model.Teacher;
+import com.example.notasjakarta.mapping.dtos.TeacherDto;
 import com.example.notasjakarta.repositories.impl.TeacherRepositoryLogicImpl;
 import com.example.notasjakarta.services.TeacherService;
 
@@ -13,7 +14,7 @@ public class TeacherServiceImpl implements TeacherService {
         this.repository = repository;
     }
     @Override
-    public List<Teacher> listar() {
+    public List<TeacherDto> listar() {
         return repository.listar();
     }
 

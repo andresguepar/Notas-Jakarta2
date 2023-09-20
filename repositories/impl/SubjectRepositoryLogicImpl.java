@@ -3,12 +3,14 @@ package com.example.notasjakarta.repositories.impl;
 import com.example.notasjakarta.domain.model.Subject;
 import com.example.notasjakarta.domain.model.Teacher;
 import com.example.notasjakarta.exceptions.UniversityException;
-import com.example.notasjakarta.repositories.Repository;
+import com.example.notasjakarta.mapping.dtos.SubjectDto;
+import com.example.notasjakarta.mapping.mapper.SubjectMapper;
+import com.example.notasjakarta.repositories.SubjectRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubjectRepositoryLogicImpl implements Repository<Subject> {
+public class SubjectRepositoryLogicImpl implements SubjectRepository<Subject> {
     private List<Subject> subjects;
 
     public SubjectRepositoryLogicImpl() {
@@ -19,8 +21,8 @@ public class SubjectRepositoryLogicImpl implements Repository<Subject> {
     }
 
     @Override
-    public List<Subject> listar() {
-        return subjects;
+    public List<SubjectDto> listar() {
+        return SubjectMapper.mapFromDto(subjects);
     }
 
     @Override

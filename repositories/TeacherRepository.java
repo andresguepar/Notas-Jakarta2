@@ -1,16 +1,16 @@
-package com.example.notasjakarta.services;
+package com.example.notasjakarta.repositories;
 
 import com.example.notasjakarta.domain.model.Teacher;
 import com.example.notasjakarta.mapping.dtos.TeacherDto;
 
 import java.util.List;
 
-public interface TeacherService {
+public interface TeacherRepository<T>{
     List<TeacherDto> listar();
 
-    Teacher porId(Long id);
+    T porId(Long id);
 
-    void guardar(Teacher t);
+    void guardar(Teacher teacher);
 
     void eliminar(Long id);
 }

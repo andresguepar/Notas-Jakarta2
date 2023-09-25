@@ -20,12 +20,12 @@ public class TeacherRepositoryLogicImpl implements TeacherRepository<Teacher> {
     }
 
     @Override
-    public List<TeacherDto> listar() {
+    public List<TeacherDto> list() {
         return TeacherMapper.mapFromDto(teachers);
     }
 
     @Override
-    public Teacher porId(Long id) {
+    public Teacher byId(Long id) {
         return teachers.stream()
                 .filter(e->id.equals(e.getId()))
                 .findFirst()
@@ -33,12 +33,12 @@ public class TeacherRepositoryLogicImpl implements TeacherRepository<Teacher> {
     }
 
     @Override
-    public void guardar(Teacher teacher) {
+    public void add(Teacher teacher) {
         teachers.add(teacher);
     }
 
     @Override
-    public void eliminar(Long id) {
+    public void delete(Long id) {
         teachers.removeIf(e->e.getId().equals(id));
     }
 }

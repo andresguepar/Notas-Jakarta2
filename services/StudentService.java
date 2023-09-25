@@ -7,11 +7,11 @@ import com.example.notasjakarta.mapping.dtos.StudentDto;
 import java.util.List;
 
 public interface StudentService {
-    List<StudentDto> listar();
+    List<StudentDto> list();
 
-    Student porId(Long id);
+    Student byId(Long id);
 
-    void guardar(Student t);
+    void add(Student t);
 
-    void eliminar(Long id);
+    void delete(Long id);
 }

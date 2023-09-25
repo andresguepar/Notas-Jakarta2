@@ -15,22 +15,22 @@ public class StudentServiceImpl implements StudentService {
         this.repository = repository;
     }
     @Override
-    public List<StudentDto> listar() {
-        return repository.listar();
+    public List<StudentDto> list() {
+        return repository.list();
     }
 
     @Override
-    public Student porId(Long id) {
-        return repository.porId(id);
+    public Student byId(Long id) {
+        return repository.byId(id);
     }
 
     @Override
-    public void guardar(Student t) {
-        repository.guardar(t);
+    public void add(Student t) {
+        repository.add(t);
     }
 
     @Override
-    public void eliminar(Long id) {
-        repository.eliminar(id);
+    public void delete(Long id) {
+        repository.delete(id);
     }
 }

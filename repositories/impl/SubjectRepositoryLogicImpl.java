@@ -21,12 +21,12 @@ public class SubjectRepositoryLogicImpl implements SubjectRepository<Subject> {
     }
 
     @Override
-    public List<SubjectDto> listar() {
+    public List<SubjectDto> list() {
         return SubjectMapper.mapFromDto(subjects);
     }
 
     @Override
-    public Subject porId(Long id) {
+    public Subject byId(Long id) {
         return subjects.stream()
                 .filter(e->id.equals(e.getId()))
                 .findFirst()
@@ -34,12 +34,12 @@ public class SubjectRepositoryLogicImpl implements SubjectRepository<Subject> {
     }
 
     @Override
-    public void guardar(Subject subject) {
+    public void add(Subject subject) {
         subjects.add(subject);
     }
 
     @Override
-    public void eliminar(Long id) {
+    public void delete(Long id) {
         subjects.removeIf(e->e.getId().equals(id));
     }
 }

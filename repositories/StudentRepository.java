@@ -5,11 +5,11 @@ import com.example.notasjakarta.mapping.dtos.StudentDto;
 import java.util.List;
 
 public interface StudentRepository<T>{
-    List<StudentDto> listar();
+    List<StudentDto> list();
 
-    T porId(Long id);
+    T byId(Long id);
 
-    void guardar(T t);
+    void add(T t);
 
-    void eliminar(Long id);
+    void delete(Long id);
 }

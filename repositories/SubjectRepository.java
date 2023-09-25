@@ -6,11 +6,11 @@ import com.example.notasjakarta.mapping.dtos.SubjectDto;
 import java.util.List;
 
 public interface SubjectRepository<T>{
-    List<SubjectDto> listar();
+    List<SubjectDto> list();
 
-    T porId(Long id);
+    T byId(Long id);
 
-    void guardar(Subject t);
+    void add(Subject t);
 
-    void eliminar(Long id);
+    void delete(Long id);
 }

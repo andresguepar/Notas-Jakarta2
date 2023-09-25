@@ -14,22 +14,22 @@ public class TeacherServiceImpl implements TeacherService {
         this.repository = repository;
     }
     @Override
-    public List<TeacherDto> listar() {
-        return repository.listar();
+    public List<TeacherDto> list() {
+        return repository.list();
     }
 
     @Override
-    public Teacher porId(Long id) {
-        return repository.porId(id);
+    public Teacher byId(Long id) {
+        return repository.byId(id);
     }
 
     @Override
-    public void guardar(Teacher t) {
-        repository.guardar(t);
+    public void add(Teacher t) {
+        repository.add(t);
     }
 
     @Override
-    public void eliminar(Long id) {
-        repository.eliminar(id);
+    public void delete(Long id) {
+        repository.delete(id);
     }
 }

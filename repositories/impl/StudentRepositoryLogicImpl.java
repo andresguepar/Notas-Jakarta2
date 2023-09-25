@@ -21,12 +21,12 @@ public class StudentRepositoryLogicImpl implements StudentRepository<Student>{
     }
 
     @Override
-    public List<StudentDto> listar() {
+    public List<StudentDto> list() {
         return StudentMapper.mapFromDto(students);
     }
 
     @Override
-    public Student porId(Long id) {
+    public Student byId(Long id) {
         return students.stream()
                 .filter(e->id.equals(e.getId()))
                 .findFirst()
@@ -34,12 +34,12 @@ public class StudentRepositoryLogicImpl implements StudentRepository<Student>{
     }
 
     @Override
-    public void guardar(Student student) {
+    public void add(Student student) {
         students.add(student);
     }
 
     @Override
-    public void eliminar(Long id) {
+    public void delete(Long id) {
         students.removeIf(e->e.getId().equals(id));
     }
 }

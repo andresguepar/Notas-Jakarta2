@@ -6,11 +6,11 @@ import com.example.notasjakarta.mapping.dtos.TeacherDto;
 import java.util.List;
 
 public interface TeacherRepository<T>{
-    List<TeacherDto> listar();
+    List<TeacherDto> list();
 
-    T porId(Long id);
+    T byId(Long id);
 
-    void guardar(Teacher teacher);
+    void add(Teacher teacher);
 
-    void eliminar(Long id);
+    void delete(Long id);
 }

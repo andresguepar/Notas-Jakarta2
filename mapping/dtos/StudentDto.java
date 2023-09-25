@@ -1,6 +1,6 @@
 package com.example.notasjakarta.mapping.dtos;
 
-public record StudentDto(long id,
+public record StudentDto(Long id,
                          String name,
                          String email,
                          String semester) {

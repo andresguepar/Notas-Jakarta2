@@ -1,36 +1,36 @@
 package com.example.notasjakarta.services.impl;
 
 
-import com.example.notasjakarta.domain.model.Student;
 import com.example.notasjakarta.mapping.dtos.StudentDto;
-import com.example.notasjakarta.repositories.impl.StudentRepositoryLogicImpl;
+import com.example.notasjakarta.repository.impl.StudentRepositoryImpl;
 import com.example.notasjakarta.services.StudentService;
 
+import java.sql.Connection;
 import java.util.List;
 public class StudentServiceImpl implements StudentService {
+    private StudentRepositoryImpl studentRepository;
 
-    private final StudentRepositoryLogicImpl repository;
-
-    public StudentServiceImpl(StudentRepositoryLogicImpl repository) {
-        this.repository = repository;
+    public StudentServiceImpl(Connection connection) {
+        this.studentRepository = new StudentRepositoryImpl(connection);
     }
+
     @Override
     public List<StudentDto> list() {
-        return repository.list();
+        return studentRepository.list();
     }
 
     @Override
-    public Student byId(Long id) {
-        return repository.byId(id);
+    public StudentDto byId(Long id) {
+        return studentRepository.byId(id);
     }
 
     @Override
-    public void add(Student t) {
-        repository.add(t);
+    public void add(StudentDto t) {
+        studentRepository.add(t);
     }
 
     @Override
     public void delete(Long id) {
-        repository.delete(id);
+        studentRepository.delete(id);
     }
 }

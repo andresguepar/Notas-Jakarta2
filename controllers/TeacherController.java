@@ -1,7 +1,9 @@
 package com.example.notasjakarta.controllers;
 
 import com.example.notasjakarta.domain.model.Teacher;
-import com.example.notasjakarta.repositories.impl.TeacherRepositoryLogicImpl;
+import com.example.notasjakarta.mapping.dtos.TeacherDto;
+import com.example.notasjakarta.mapping.mapper.TeacherMapper;
+import com.example.notasjakarta.repository.impl.TeacherRepositoryImpl;
 import com.example.notasjakarta.services.TeacherService;
 import com.example.notasjakarta.services.impl.TeacherServiceImpl;
 import jakarta.servlet.ServletException;
@@ -12,17 +14,14 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 
 @WebServlet(name = "teacherController", value = "/teacher-form")
 public class TeacherController extends HttpServlet {
 
-    private TeacherRepositoryLogicImpl teachertRepository;
+    private TeacherRepositoryImpl repository;
     private TeacherService service;
 
-    public TeacherController() {
-        teachertRepository = new TeacherRepositoryLogicImpl();
-        service = new TeacherServiceImpl(teachertRepository);
-    }
 
     private String message;
 
@@ -33,23 +32,32 @@ public class TeacherController extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
+
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
-        out.println("<h1>Teacher</h1>");
-        out.println(service.listar());
+        out.println("<h1>Teachers</h1>");
+        out.println(service.list());
         out.println("</body></html>");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
+        Connection conn = (Connection) req.getAttribute("conn");
+        repository = new TeacherRepositoryImpl(conn);
+        service = new TeacherServiceImpl(conn);
 
         String name = req.getParameter("name");
         String email = req.getParameter("email");
 
-        Teacher teacher = new Teacher(4L, name,email);
-        service.guardar(teacher);
-        System.out.println(service.listar());
+        Teacher teacher = Teacher.builder()
+                .name(name)
+                .email(email)
+                .build();
+
+        TeacherDto teacherDto = TeacherMapper.mapFrom(teacher);
+        service.add(teacherDto);
+        System.out.println(service.list());
 
         try (PrintWriter out = resp.getWriter()) {
 

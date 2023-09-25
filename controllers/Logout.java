@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Optional;
 
 @WebServlet("/logout")
@@ -25,7 +26,8 @@ public class Logout extends HttpServlet {
                 usernameCookie.setMaxAge(0);
                 resp.addCookie(usernameCookie);
             }
-            resp.sendRedirect(req.getContextPath() + "/login.html");
+
+            resp.sendRedirect(req.getContextPath() + "/login.jsp");
         }
 
 }

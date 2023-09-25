@@ -1,11 +1,14 @@
-package com.example.notasjakarta.controllers;
+package com.example.notasjakarta.controllers.student;
 
 
 import com.example.notasjakarta.domain.model.Student;
-import com.example.notasjakarta.repositories.impl.StudentRepositoryLogicImpl;
+import com.example.notasjakarta.mapping.dtos.StudentDto;
+import com.example.notasjakarta.mapping.mapper.StudentMapper;
+import com.example.notasjakarta.repository.impl.StudentRepositoryImpl;
 import com.example.notasjakarta.services.StudentService;
 import com.example.notasjakarta.services.impl.StudentServiceImpl;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,46 +16,53 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.sql.Connection;
 @WebServlet(name = "studentController", value = "/student-form")
 public class StudentController extends HttpServlet {
 
-    private StudentRepositoryLogicImpl studentRepository;
-    private StudentService service;
-
-    public StudentController() {
-        studentRepository = new StudentRepositoryLogicImpl();
-        service = new StudentServiceImpl(studentRepository);
-    }
 
     private String message;
+    private StudentRepositoryImpl repository;
+    private StudentService service;
 
     public void init() {
         message = "Hello World!";
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException, IOException {
+        Connection conn = (Connection) request.getAttribute("conn");
+        repository = new StudentRepositoryImpl(conn);
+        service = new StudentServiceImpl(conn);
         response.setContentType("text/html");
-
         // Hello
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
         out.println("<h1>Students</h1>");
-        out.println(service.listar());
+        out.println(service.list());
         out.println("</body></html>");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
+        Connection conn = (Connection) req.getAttribute("conn");
+
+        StudentService service = new StudentServiceImpl(conn);
 
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         String semester = req.getParameter("semester");
 
-        Student student = new Student(4L, name,email,semester);
-        service.guardar(student);
-        System.out.println(service.listar());
+        Student student = Student.builder()
+                .name(name)
+                .email(email)
+                .semester(semester)
+                .build();
+
+        StudentDto studentDto = StudentMapper.mapFrom(student);
+        service.add(studentDto);
+        System.out.println(service.list());
 
         try (PrintWriter out = resp.getWriter()) {
 
@@ -73,6 +83,11 @@ public class StudentController extends HttpServlet {
             out.println("    </body>");
             out.println("</html>");
         }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPut(req, resp);
     }
 
     public void destroy() {

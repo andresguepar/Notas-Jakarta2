@@ -1,4 +1,4 @@
-package com.example.notasjakarta.controllers;
+package com.example.notasjakarta.controllers.login;
 
 import com.example.notasjakarta.services.LoginService;
 import com.example.notasjakarta.services.impl.LoginServiceImpl;
@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
 
-@WebServlet(name = "login", value = "/login")
-public class Login extends HttpServlet {
+@WebServlet("/login")
+public class LoginServlet extends HttpServlet {
     final static String USERNAME = "admin";
     final static String PASSWORD = "12345";
     @Override
@@ -26,7 +26,6 @@ public class Login extends HttpServlet {
             resp.setContentType("text/html;charset=UTF-8");
             Cookie usernameCookie = new Cookie("username", username);
             resp.addCookie(usernameCookie);
-            resp.sendRedirect(req.getContextPath() + "/login.html");
             try (PrintWriter out = resp.getWriter()) {
                 out.println("<!DOCTYPE html>");
                 out.println("<html>");
@@ -63,13 +62,13 @@ public class Login extends HttpServlet {
                 out.println(" <h1>Hola " + cookieOptional.get() + " has iniciado sesión con " +
                         "éxito!</h1>");
                 out.println("<p><a href='" + req.getContextPath() +
-                        "/index.html'>volver</a></p>");
+                        "/index.jps'>volver</a></p>");
 
                 out.println("<p><a href='" + req.getContextPath() + "/logout'>cerrar sesión</a></p>");
                 out.println(" </body>");
                 out.println("</html>");
             }
-        } else {
+        }else {
             getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
         }
     }

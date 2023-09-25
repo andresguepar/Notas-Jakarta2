@@ -1,4 +1,4 @@
-package com.example.notasjakarta.controllers;
+package com.example.notasjakarta.controllers.student;
 
 import com.example.notasjakarta.domain.model.Student;
 import com.example.notasjakarta.mapping.dtos.StudentDto;
@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.util.List;
 
 @WebServlet(name = "studentJson", value = "/student.json")
@@ -24,7 +25,7 @@ public class StudentJson extends HttpServlet {
 
     public StudentJson() {
         studentRepository = new StudentRepositoryLogicImpl();
-        service = new StudentServiceImpl(studentRepository);
+        service = new StudentServiceImpl((Connection) studentRepository);
     }
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws
             ServletException, IOException {
@@ -55,7 +56,7 @@ public class StudentJson extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
             IOException {
-        List<StudentDto> students = service.listar();
+        List<StudentDto> students = service.list();
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(students);
         resp.setContentType("application/json");

@@ -1,7 +1,7 @@
 package com.example.notasjakarta.controllers;
 
-import com.example.notasjakarta.domain.model.Student;
 import com.example.notasjakarta.exceptions.UniversityException;
+import com.example.notasjakarta.mapping.dtos.StudentDto;
 import com.example.notasjakarta.repositories.impl.StudentRepositoryLogicImpl;
 import com.example.notasjakarta.services.StudentService;
 import com.example.notasjakarta.services.impl.StudentServiceImpl;
@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 
 @WebServlet(name = "id", value = "/id")
 public class Id extends HttpServlet {
@@ -21,7 +22,7 @@ public class Id extends HttpServlet {
 
     public Id() {
         studentRepository = new StudentRepositoryLogicImpl();
-        service = new StudentServiceImpl(studentRepository);
+        service = new StudentServiceImpl((Connection) studentRepository);
     }
 
     @Override
@@ -30,7 +31,7 @@ public class Id extends HttpServlet {
         Long id = Long.valueOf(req.getParameter("id"));
 
         try {
-            Student student = service.porId(id);
+            StudentDto student = service.byId(id);
 
             try (PrintWriter out = resp.getWriter()) {
                 out.println("<!DOCTYPE html>");
@@ -41,7 +42,7 @@ public class Id extends HttpServlet {
                 out.println(" </head>");
                 out.println(" <body>");
                 out.println(" <h1>Id correcto!</h1>");
-                out.println(" <h3>Hola " + student.getName() + " has iniciado sesión con éxito!</h3>");
+                out.println(" <h3>Hola " + student.name() + " has iniciado sesión con éxito!</h3>");
                 out.println(" </body>");
                 out.println("</html>");
 

@@ -35,17 +35,13 @@ public class SubjectController extends HttpServlet {
     private SubjectRepositoryImpl repository;
     private SubjectService service;
 
-    public SubjectController() {
-        /*subjectRepository = new SubjectRepositoryLogicImpl();
-        service = new SubjectServiceImpl((Connection) subjectRepository);*/
-    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         Connection conn = (Connection) request.getAttribute("conn");
         SubjectService service = new SubjectServiceImpl(conn);
 
-        // Hello
+
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
         out.println("<h1>Subjects</h1>");
@@ -111,25 +107,26 @@ public class SubjectController extends HttpServlet {
         service = new SubjectServiceImpl(conn);
         TeacherServiceImpl teacherService = new TeacherServiceImpl(conn);
 
-        ServletInputStream JsonStream = req.getInputStream();
+        /*ServletInputStream JsonStream = req.getInputStream();
 
         ObjectMapper mapper = new ObjectMapper();
         SubjectDto subject = mapper.readValue(JsonStream, SubjectDto.class);
 
-        SubjectService service = new SubjectServiceImpl(conn);
+        SubjectService service = new SubjectServiceImpl(conn);*/
 
 
-        /*String name = req.getParameter("name");
-        Long id = Long.valueOf(req.getParameter("id_teacher"));
+        Long id = Long.valueOf(req.getParameter("id"));
+        String name = req.getParameter("name");
+        Long idT = Long.valueOf(req.getParameter("id_teacher"));
         Subject subject = Subject.builder()
                 .id(id)
                 .name(name)
-                .teacher(TeacherMapper.mapFrom(teacherService.byId(id)))
+                .teacher(TeacherMapper.mapFrom(teacherService.byId(idT)))
                 .build();
 
-        SubjectDto subjectDto = SubjectMapper.mapFrom(subject);*/
+        SubjectDto subjectDto = SubjectMapper.mapFrom(subject);
 
-        service.add(subject);
+        service.add(subjectDto);
 
         try (PrintWriter out = resp.getWriter()) {
             out.println("<!DOCTYPE html>");
@@ -142,11 +139,11 @@ public class SubjectController extends HttpServlet {
             out.println("        <h1>Resultado form!</h1>");
 
             out.println("        <ul>");
-            out.println("            <li>Id: " + subject.id() + "</li>");
-            out.println("            <li>Name: " + subject.name() + "</li>");
-            out.println("            <li>Teacher Id: " + subject.teacher().getId() + "</li>");
-            out.println("            <li>Teacher Name: " + subject.teacher().getName() + "</li>");
-            out.println("            <li>Teacher Name: " + subject.teacher().getEmail() + "</li>");
+            out.println("            <li>Id: " + subjectDto.id() + "</li>");
+            out.println("            <li>Name: " + subjectDto.name() + "</li>");
+            out.println("            <li>Teacher Id: " + subjectDto.teacher().getId() + "</li>");
+            out.println("            <li>Teacher Name: " + subjectDto.teacher().getName() + "</li>");
+            out.println("            <li>Teacher Name: " + subjectDto.teacher().getEmail() + "</li>");
             out.println("        </ul>");
             out.println("    </body>");
             out.println("</html>");

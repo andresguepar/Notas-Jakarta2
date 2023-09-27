@@ -90,7 +90,8 @@ public class GradeRepositoryImpl implements Repository<GradeDto> {
     @Override
     public void add(GradeDto gradeDto) {
         String sql;
-        Grade grade = null;
+        Grade grade = GradeMapper.mapFrom(gradeDto);
+
         if (grade.getId() != null && grade.getId()>0 ) {
             sql = "UPDATE grades SET id_student=?,id_subject=?,grade=? WHERE id=?";
         }else {

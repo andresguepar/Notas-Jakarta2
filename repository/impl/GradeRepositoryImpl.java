@@ -113,6 +113,7 @@ public class GradeRepositoryImpl implements Repository<Grade> {
     public void delete(Long id) {
         try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM grades WHERE id =?")){
             stmt.setLong(1, id);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

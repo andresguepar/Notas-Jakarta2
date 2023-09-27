@@ -86,6 +86,7 @@ public class TeacherRepositoryImpl implements Repository<TeacherDto> {
     public void delete(Long id) {
         try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM teachers WHERE id =?")){
             stmt.setLong(1, id);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

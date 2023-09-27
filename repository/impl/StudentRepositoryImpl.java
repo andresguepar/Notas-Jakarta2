@@ -93,6 +93,7 @@ public class StudentRepositoryImpl implements Repository<StudentDto> {
     public void delete(Long id) {
         try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM students WHERE id =?")){
             stmt.setLong(1, id);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

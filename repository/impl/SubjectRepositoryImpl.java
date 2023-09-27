@@ -98,6 +98,7 @@ public class SubjectRepositoryImpl implements Repository<SubjectDto> {
     public void delete(Long id) {
         try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM subjects WHERE id =?")){
             stmt.setLong(1, id);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -35,9 +35,10 @@ public class StudentController extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
         Connection conn = (Connection) request.getAttribute("conn");
+        repository = new StudentRepositoryImpl(conn);
+        service = new StudentServiceImpl(conn);
 
         response.setContentType("text/html");
-        // Hello
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
         out.println("<h1>Students</h1>");

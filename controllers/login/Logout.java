@@ -1,4 +1,4 @@
-package com.example.notasjakarta.controllers;
+package com.example.notasjakarta.controllers.login;
 
 
 import com.example.notasjakarta.services.LoginService;

@@ -1,4 +1,4 @@
-package com.example.notasjakarta.controllers;
+package com.example.notasjakarta.controllers.teacher;
 
 import com.example.notasjakarta.domain.model.Subject;
 import com.example.notasjakarta.domain.model.Teacher;

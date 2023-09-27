@@ -4,20 +4,22 @@ import com.example.notasjakarta.domain.model.Grade;
 import com.example.notasjakarta.domain.model.Student;
 import com.example.notasjakarta.domain.model.Subject;
 import com.example.notasjakarta.domain.model.Teacher;
+import com.example.notasjakarta.mapping.dtos.GradeDto;
+import com.example.notasjakarta.mapping.mapper.GradeMapper;
 import com.example.notasjakarta.repository.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GradeRepositoryImpl implements Repository<Grade> {
+public class GradeRepositoryImpl implements Repository<GradeDto> {
     private Connection conn;
 
     public GradeRepositoryImpl(Connection conn) {
         this.conn = conn;
     }
 
-    private Grade createGrade(ResultSet resultSet) throws
+    private GradeDto createGrade(ResultSet resultSet) throws
             SQLException {
         Grade grade = new Grade();
         grade.setId(resultSet.getLong("id"));
@@ -42,19 +44,19 @@ public class GradeRepositoryImpl implements Repository<Grade> {
         subject.setTeacher(teacher);
 
         grade.setSubject(subject);
-        return grade;
+        return GradeMapper.mapFrom(grade);
     }
 
     @Override
-    public List<Grade> list() {
-        List<Grade> gradeList = new ArrayList<>();
+    public List<GradeDto> list() {
+        List<GradeDto> gradeList = new ArrayList<>();
         try (Statement statement = conn.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT g.*,st.name, st.email AS emailS, st.semester, " +
                      "sb.name AS subject, t.id_teacher, t.name AS teacher, t.email FROM grades g INNER JOIN students st " +
                      "INNER JOIN subjects sb INNER JOIN teachers t ON (g.id_student = st.id  " +
                      "AND g.id_subject = sb.id_subject AND sb.id_teacher = t.id_teacher);")) {
             while (resultSet.next()) {
-                Grade grade = createGrade(resultSet);
+                GradeDto grade = createGrade(resultSet);
                 gradeList.add(grade);
             }
         } catch (SQLException e) {
@@ -65,8 +67,8 @@ public class GradeRepositoryImpl implements Repository<Grade> {
     }
 
     @Override
-    public Grade byId(Long id) {
-        Grade grade = null;
+    public GradeDto byId(Long id) {
+        GradeDto grade = null;
         try (PreparedStatement preparedStatement = conn
                 .prepareStatement("SELECT g.*,st.name, st.email AS emailS, st.semester, sb.name AS subject, t.name " +
                         "AS teacher, t.email FROM grades g INNER JOIN students st INNER JOIN subjects sb " +
@@ -86,9 +88,9 @@ public class GradeRepositoryImpl implements Repository<Grade> {
     }
 
     @Override
-    public void add(Grade grade) {
+    public void add(GradeDto gradeDto) {
         String sql;
-
+        Grade grade = null;
         if (grade.getId() != null && grade.getId()>0 ) {
             sql = "UPDATE grades SET id_student=?,id_subject=?,grade=? WHERE id=?";
         }else {

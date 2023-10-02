@@ -1,6 +1,5 @@
 package com.example.notasjakarta.services.impl;
 
-import com.example.notasjakarta.domain.model.Grade;
 import com.example.notasjakarta.mapping.dtos.GradeDto;
 import com.example.notasjakarta.repository.impl.GradeRepositoryImpl;
 import com.example.notasjakarta.services.GradeService;

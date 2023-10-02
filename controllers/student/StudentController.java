@@ -1,13 +1,10 @@
 package com.example.notasjakarta.controllers.student;
 
 
-import com.example.notasjakarta.domain.model.Student;
 import com.example.notasjakarta.mapping.dtos.StudentDto;
-import com.example.notasjakarta.mapping.mapper.StudentMapper;
 import com.example.notasjakarta.repository.impl.StudentRepositoryImpl;
 import com.example.notasjakarta.services.StudentService;
 import com.example.notasjakarta.services.impl.StudentServiceImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;

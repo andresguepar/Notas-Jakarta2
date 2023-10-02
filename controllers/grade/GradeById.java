@@ -1,13 +1,9 @@
 package com.example.notasjakarta.controllers.grade;
 
 import com.example.notasjakarta.mapping.dtos.GradeDto;
-import com.example.notasjakarta.mapping.dtos.SubjectDto;
 import com.example.notasjakarta.repository.impl.GradeRepositoryImpl;
-import com.example.notasjakarta.repository.impl.SubjectRepositoryImpl;
 import com.example.notasjakarta.services.GradeService;
-import com.example.notasjakarta.services.SubjectService;
 import com.example.notasjakarta.services.impl.GradeServiceImpl;
-import com.example.notasjakarta.services.impl.SubjectServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
@@ -33,7 +29,7 @@ public class GradeById extends HttpServlet {
         service = new GradeServiceImpl(conn);
         ServletInputStream JsonStream = req.getInputStream();
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper() ;
 
         GradeService service = new GradeServiceImpl(conn);
 

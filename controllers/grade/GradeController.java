@@ -1,23 +1,17 @@
 package com.example.notasjakarta.controllers.grade;
 
 import com.example.notasjakarta.domain.model.Grade;
-import com.example.notasjakarta.domain.model.Subject;
 import com.example.notasjakarta.mapping.dtos.GradeDto;
-import com.example.notasjakarta.mapping.dtos.SubjectDto;
 import com.example.notasjakarta.mapping.mapper.GradeMapper;
 import com.example.notasjakarta.mapping.mapper.StudentMapper;
 import com.example.notasjakarta.mapping.mapper.SubjectMapper;
-import com.example.notasjakarta.mapping.mapper.TeacherMapper;
 import com.example.notasjakarta.repository.impl.GradeRepositoryImpl;
-import com.example.notasjakarta.repository.impl.SubjectRepositoryImpl;
 import com.example.notasjakarta.services.GradeService;
 import com.example.notasjakarta.services.StudentService;
 import com.example.notasjakarta.services.SubjectService;
-import com.example.notasjakarta.services.TeacherService;
 import com.example.notasjakarta.services.impl.GradeServiceImpl;
 import com.example.notasjakarta.services.impl.StudentServiceImpl;
 import com.example.notasjakarta.services.impl.SubjectServiceImpl;
-import com.example.notasjakarta.services.impl.TeacherServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;

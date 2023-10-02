@@ -1,20 +1,11 @@
 package com.example.notasjakarta.controllers.subject;
 
-import com.example.notasjakarta.domain.model.Student;
 import com.example.notasjakarta.domain.model.Subject;
-import com.example.notasjakarta.domain.model.Teacher;
-import com.example.notasjakarta.mapping.dtos.StudentDto;
 import com.example.notasjakarta.mapping.dtos.SubjectDto;
-import com.example.notasjakarta.mapping.dtos.TeacherDto;
-import com.example.notasjakarta.mapping.mapper.StudentMapper;
 import com.example.notasjakarta.mapping.mapper.SubjectMapper;
 import com.example.notasjakarta.mapping.mapper.TeacherMapper;
-import com.example.notasjakarta.repository.impl.StudentRepositoryImpl;
 import com.example.notasjakarta.repository.impl.SubjectRepositoryImpl;
-import com.example.notasjakarta.services.StudentService;
 import com.example.notasjakarta.services.SubjectService;
-import com.example.notasjakarta.services.TeacherService;
-import com.example.notasjakarta.services.impl.StudentServiceImpl;
 import com.example.notasjakarta.services.impl.SubjectServiceImpl;
 import com.example.notasjakarta.services.impl.TeacherServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -107,15 +98,15 @@ public class SubjectController extends HttpServlet {
         service = new SubjectServiceImpl(conn);
         TeacherServiceImpl teacherService = new TeacherServiceImpl(conn);
 
-        /*ServletInputStream JsonStream = req.getInputStream();
+        ServletInputStream JsonStream = req.getInputStream();
 
         ObjectMapper mapper = new ObjectMapper();
         SubjectDto subject = mapper.readValue(JsonStream, SubjectDto.class);
 
-        SubjectService service = new SubjectServiceImpl(conn);*/
+        SubjectService service = new SubjectServiceImpl(conn);
 
 
-        Long id = Long.valueOf(req.getParameter("id"));
+        /*Long id = Long.valueOf(req.getParameter("id"));
         String name = req.getParameter("name");
         Long idT = Long.valueOf(req.getParameter("id_teacher"));
         Subject subject = Subject.builder()
@@ -124,9 +115,9 @@ public class SubjectController extends HttpServlet {
                 .teacher(TeacherMapper.mapFrom(teacherService.byId(idT)))
                 .build();
 
-        SubjectDto subjectDto = SubjectMapper.mapFrom(subject);
+        SubjectDto subjectDto = SubjectMapper.mapFrom(subject);*/
 
-        service.add(subjectDto);
+        service.add(subject);
 
         try (PrintWriter out = resp.getWriter()) {
             out.println("<!DOCTYPE html>");
@@ -139,11 +130,11 @@ public class SubjectController extends HttpServlet {
             out.println("        <h1>Resultado form!</h1>");
 
             out.println("        <ul>");
-            out.println("            <li>Id: " + subjectDto.id() + "</li>");
-            out.println("            <li>Name: " + subjectDto.name() + "</li>");
-            out.println("            <li>Teacher Id: " + subjectDto.teacher().getId() + "</li>");
-            out.println("            <li>Teacher Name: " + subjectDto.teacher().getName() + "</li>");
-            out.println("            <li>Teacher Name: " + subjectDto.teacher().getEmail() + "</li>");
+            out.println("            <li>Id: " + subject.id() + "</li>");
+            out.println("            <li>Name: " + subject.name() + "</li>");
+            out.println("            <li>Teacher Id: " + subject.teacher().getId() + "</li>");
+            out.println("            <li>Teacher Name: " + subject.teacher().getName() + "</li>");
+            out.println("            <li>Teacher Name: " + subject.teacher().getEmail() + "</li>");
             out.println("        </ul>");
             out.println("    </body>");
             out.println("</html>");

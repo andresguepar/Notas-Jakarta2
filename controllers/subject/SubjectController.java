@@ -2,10 +2,12 @@ package com.example.notasjakarta.controllers.subject;
 
 import com.example.notasjakarta.domain.model.Subject;
 import com.example.notasjakarta.mapping.dtos.SubjectDto;
+import com.example.notasjakarta.mapping.dtos.TeacherDto;
 import com.example.notasjakarta.mapping.mapper.SubjectMapper;
 import com.example.notasjakarta.mapping.mapper.TeacherMapper;
 import com.example.notasjakarta.repository.impl.SubjectRepositoryImpl;
 import com.example.notasjakarta.services.SubjectService;
+import com.example.notasjakarta.services.TeacherService;
 import com.example.notasjakarta.services.impl.SubjectServiceImpl;
 import com.example.notasjakarta.services.impl.TeacherServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,10 +21,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "subjectController", value = "/subject-form")
 public class SubjectController extends HttpServlet {
-
+    private TeacherService serviceT;
     private SubjectRepositoryImpl repository;
     private SubjectService service;
 
@@ -46,8 +51,6 @@ public class SubjectController extends HttpServlet {
 
         Connection conn = (Connection) req.getAttribute("conn");
 
-        repository = new SubjectRepositoryImpl(conn);
-        service = new SubjectServiceImpl(conn);
         TeacherServiceImpl teacherService = new TeacherServiceImpl(conn);
 
         /*ServletInputStream JsonStream = req.getInputStream();
@@ -55,37 +58,48 @@ public class SubjectController extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
         SubjectDto subject = mapper.readValue(JsonStream, SubjectDto.class);*/
 
-        SubjectService service = new SubjectServiceImpl(conn);
-
         String name = req.getParameter("name");
-        Long id = Long.valueOf(req.getParameter("id_teacher"));
-        Subject subject = Subject.builder()
-                .name(name)
-                .teacher(TeacherMapper.mapFrom(teacherService.byId(id)))
-                .build();
+        String teacherName = req.getParameter("teacher");
+        Map<String, String> errorsmap = getErrors(name, teacherName);
 
-        SubjectDto subjectDto = SubjectMapper.mapFrom(subject);
+        repository = new SubjectRepositoryImpl(conn);
+        service = new SubjectServiceImpl(conn);
 
-        service.add(subjectDto);
+        if(errorsmap.isEmpty()) {
 
-        try (PrintWriter out = resp.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("    <head>");
-            out.println("        <meta charset=\"UTF-8\">");
-            out.println("        <title>Resultado form</title>");
-            out.println("    </head>");
-            out.println("    <body>");
-            out.println("        <h1>Resultado form!</h1>");
+            TeacherDto teacherDto = getTeacherByName(teacherName);
 
-            out.println("        <ul>");
-            out.println("            <li>Name: " + subjectDto.name() + "</li>");
-            out.println("            <li>Teacher Id: " + subjectDto.teacher().getId() + "</li>");
-            out.println("            <li>Teacher Name: " + subjectDto.teacher().getName() + "</li>");
-            out.println("            <li>Teacher Name: " + subjectDto.teacher().getEmail() + "</li>");
-            out.println("        </ul>");
-            out.println("    </body>");
-            out.println("</html>");
+            Subject subject = Subject.builder()
+                    .name(name)
+                    .teacher(TeacherMapper.mapFrom(teacherDto))
+                    .build();
+            SubjectDto subjectDto = SubjectMapper.mapFrom(subject);
+
+            service.add(subjectDto);
+            System.out.println(service.list());
+
+            try (PrintWriter out = resp.getWriter()) {
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("    <head>");
+                out.println("        <meta charset=\"UTF-8\">");
+                out.println("        <title>Resultado form</title>");
+                out.println("    </head>");
+                out.println("    <body>");
+                out.println("        <h1>Resultado form!</h1>");
+
+                out.println("        <ul>");
+                out.println("            <li>Name: " + subjectDto.name() + "</li>");
+                out.println("            <li>Teacher Id: " + subjectDto.teacher().getId() + "</li>");
+                out.println("            <li>Teacher Name: " + subjectDto.teacher().getName() + "</li>");
+                out.println("            <li>Teacher Name: " + subjectDto.teacher().getEmail() + "</li>");
+                out.println("        </ul>");
+                out.println("    </body>");
+                out.println("</html>");
+            }
+        }else{
+            req.setAttribute("errorsmap", errorsmap);
+            getServletContext().getRequestDispatcher("/subject.jsp").forward(req, resp);
         }
     }
 
@@ -156,5 +170,25 @@ public class SubjectController extends HttpServlet {
 
         service.delete(id);
 
+    }
+    private TeacherDto getTeacherByName(String teacher){
+        List<TeacherDto> teachers = serviceT.list();
+        return teachers.stream()
+                .filter(e->e.name().equalsIgnoreCase(teacher))
+                .findFirst()
+                .orElse(null);
+
+    }
+    private Map<String,String> getErrors(String name, String teacher){
+        Map<String,String> errors = new HashMap<>();
+        if(name==null || name.isBlank()){
+            errors.put("name","El nombre es requerido");
+        }
+        if(teacher==null || teacher.isBlank()){
+            errors.put("teacher","El teacher es requerido");
+        }
+        return errors;
+    }
+    public void destroy() {
     }
 }

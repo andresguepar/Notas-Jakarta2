@@ -1,4 +1,4 @@
-package com.example.notasjakarta.controllers;
+package com.example.notasjakarta.controllers.others;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

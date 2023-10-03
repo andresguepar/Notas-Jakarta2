@@ -1,7 +1,16 @@
 package com.example.notasjakarta.controllers.login;
 
+import com.example.notasjakarta.mapping.dtos.StudentDto;
+import com.example.notasjakarta.mapping.dtos.SubjectDto;
+import com.example.notasjakarta.mapping.dtos.TeacherDto;
 import com.example.notasjakarta.services.LoginService;
+import com.example.notasjakarta.services.StudentService;
+import com.example.notasjakarta.services.SubjectService;
+import com.example.notasjakarta.services.TeacherService;
 import com.example.notasjakarta.services.impl.LoginServiceImpl;
+import com.example.notasjakarta.services.impl.StudentServiceImpl;
+import com.example.notasjakarta.services.impl.SubjectServiceImpl;
+import com.example.notasjakarta.services.impl.TeacherServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
@@ -11,6 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.util.List;
 import java.util.Optional;
 
 @WebServlet("/login")
@@ -26,6 +37,22 @@ public class LoginServlet extends HttpServlet {
             resp.setContentType("text/html;charset=UTF-8");
             Cookie usernameCookie = new Cookie("username", username);
             resp.addCookie(usernameCookie);
+
+            Connection conn = (Connection) req.getAttribute("conn");
+            TeacherService service = new TeacherServiceImpl(conn);
+            List<TeacherDto> teacherDtoList = service.list();
+            getServletContext().setAttribute("teacherDtoList", teacherDtoList);
+
+            SubjectService serviceS = new SubjectServiceImpl(conn);
+            List<SubjectDto> subjectDtoList = serviceS.list();
+            getServletContext().setAttribute("subjectDtoList", subjectDtoList);
+
+            StudentService serviceSt = new StudentServiceImpl(conn);
+            List<StudentDto> studentDtoList = serviceSt.list();
+            getServletContext().setAttribute("studentDtoList", studentDtoList);
+
+
+
             try (PrintWriter out = resp.getWriter()) {
                 out.println("<!DOCTYPE html>");
                 out.println("<html>");

@@ -1,4 +1,4 @@
-package com.example.notasjakarta.controllers;
+package com.example.notasjakarta.controllers.others;
 
 import com.example.notasjakarta.exceptions.UniversityException;
 import com.example.notasjakarta.mapping.dtos.StudentDto;

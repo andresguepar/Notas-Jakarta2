@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeacherRepositoryLogicImpl implements TeacherRepository<Teacher> {
-    private List<Teacher> teachers;
+    private final List<Teacher> teachers;
 
     public TeacherRepositoryLogicImpl() {
         Teacher t1 = new Teacher(1L,"Tulipiaqwq","tuli@email.com");

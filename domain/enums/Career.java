@@ -17,7 +17,7 @@ public enum Career {
         this.value = value;
     }
 
-    private String value;
+    private final String value;
 
     public static Career fromValue(String value) {
         return Arrays.stream(Career.values()).filter(e->value.equalsIgnoreCase(e.value)).findFirst()

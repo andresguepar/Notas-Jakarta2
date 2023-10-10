@@ -1,5 +1,6 @@
 package com.example.notasjakarta.repository.impl;
 
+import com.example.notasjakarta.annotations.MysqlConn;
 import com.example.notasjakarta.domain.model.Grade;
 import com.example.notasjakarta.domain.model.Student;
 import com.example.notasjakarta.domain.model.Subject;
@@ -7,17 +8,17 @@ import com.example.notasjakarta.domain.model.Teacher;
 import com.example.notasjakarta.mapping.dtos.GradeDto;
 import com.example.notasjakarta.mapping.mapper.GradeMapper;
 import com.example.notasjakarta.repository.Repository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@ApplicationScoped
 public class GradeRepositoryImpl implements Repository<GradeDto> {
+    @Inject
+    @MysqlConn
     private Connection conn;
-
-    public GradeRepositoryImpl(Connection conn) {
-        this.conn = conn;
-    }
 
     private GradeDto createGrade(ResultSet resultSet) throws
             SQLException {

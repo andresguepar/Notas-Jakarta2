@@ -4,10 +4,9 @@ package com.example.notasjakarta.controllers.student;
 import com.example.notasjakarta.domain.model.Student;
 import com.example.notasjakarta.mapping.dtos.StudentDto;
 import com.example.notasjakarta.mapping.mapper.StudentMapper;
-import com.example.notasjakarta.repository.impl.StudentRepositoryImpl;
 import com.example.notasjakarta.services.StudentService;
-import com.example.notasjakarta.services.impl.StudentServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,17 +16,14 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(name = "studentController", value = "/student-form")
 public class StudentController extends HttpServlet {
-
-
-    private String message;
-    private StudentRepositoryImpl repository;
+    @Inject
     private StudentService service;
+    private String message;
 
     public void init() {
         message = "Hello World!";
@@ -35,9 +31,6 @@ public class StudentController extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
-        Connection conn = (Connection) request.getAttribute("conn");
-        repository = new StudentRepositoryImpl(conn);
-        service = new StudentServiceImpl(conn);
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -50,7 +43,6 @@ public class StudentController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        Connection conn = (Connection) req.getAttribute("conn");
 
         String name = req.getParameter("name");
         String email = req.getParameter("email");
@@ -61,8 +53,6 @@ public class StudentController extends HttpServlet {
                 .email(email)
                 .semester(semester)
                 .build();
-        repository = new StudentRepositoryImpl(conn);
-        service = new StudentServiceImpl(conn);
 
         StudentDto studentDto = StudentMapper.mapFrom(student);
         Map<String,String> errorsmap= getErrors(name,semester,email);
@@ -99,17 +89,11 @@ public class StudentController extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        Connection conn = (Connection) req.getAttribute("conn");
-
-        repository = new StudentRepositoryImpl(conn);
-        service = new StudentServiceImpl(conn);
 
         ServletInputStream JsonStream = req.getInputStream();
-
         ObjectMapper mapper = new ObjectMapper();
-        StudentDto student = mapper.readValue(JsonStream, StudentDto.class);
 
-        StudentService service = new StudentServiceImpl(conn);
+        StudentDto student = mapper.readValue(JsonStream, StudentDto.class);
 
 
             /* Long id = Long.valueOf(req.getParameter("id"));
@@ -125,8 +109,8 @@ public class StudentController extends HttpServlet {
                         .semester(semester)
                         .build();
 
-                StudentDto studentDto = StudentMapper.mapFrom(student)*/;
-                service.add(student);
+                StudentDto studentDto = StudentMapper.mapFrom(student)*/
+        service.add(student);
         try (PrintWriter out = resp.getWriter()) {
                 out.println("<!DOCTYPE html>");
                 out.println("<html>");
@@ -152,12 +136,9 @@ public class StudentController extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        Connection conn = (Connection) req.getAttribute("conn");
+
         ServletInputStream JsonStream = req.getInputStream();
-
         ObjectMapper mapper = new ObjectMapper();
-
-        StudentService service = new StudentServiceImpl(conn);
 
         StudentDto student = mapper.readValue(JsonStream, StudentDto.class);
         Long id = student.id();

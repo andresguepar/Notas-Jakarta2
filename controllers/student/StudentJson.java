@@ -2,10 +2,9 @@ package com.example.notasjakarta.controllers.student;
 
 import com.example.notasjakarta.domain.model.Student;
 import com.example.notasjakarta.mapping.dtos.StudentDto;
-import com.example.notasjakarta.repository.impl.StudentRepositoryImpl;
 import com.example.notasjakarta.services.StudentService;
-import com.example.notasjakarta.services.impl.StudentServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,19 +14,16 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.List;
 
 @WebServlet(name = "studentJson", value = "/student.json")
 public class StudentJson extends HttpServlet {
-    private StudentRepositoryImpl repository;
+    @Inject
     private StudentService service;
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws
             ServletException, IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        repository = new StudentRepositoryImpl(conn);
-        service = new StudentServiceImpl(conn);
+
         ServletInputStream jsonStream = req.getInputStream();
         ObjectMapper mapper = new ObjectMapper();
         Student student = mapper.readValue(jsonStream, Student.class);
@@ -55,9 +51,6 @@ public class StudentJson extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
             IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        repository = new StudentRepositoryImpl(conn);
-        service = new StudentServiceImpl(conn);
         List<StudentDto> students = service.list();
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(students);

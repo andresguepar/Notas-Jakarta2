@@ -1,7 +1,9 @@
 package com.example.notasjakarta.controllers.login;
 
 import com.example.notasjakarta.services.LoginService;
-import com.example.notasjakarta.services.impl.LoginServiceSessionImpl;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,10 +14,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
 
-
+@RequestScoped
 public class LoginSessionServlet extends HttpServlet {
     final static String USERNAME = "admin";
     final static String PASSWORD = "12345";
+    @Inject
+    @Named("login")
+    private LoginService auth;
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -34,7 +39,7 @@ public class LoginSessionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws
             ServletException, IOException {
-        LoginService auth = new LoginServiceSessionImpl();
+
         Optional<String> usernameOptional = auth.getUsername(req);
         if (usernameOptional.isPresent()) {
             resp.setContentType("text/html;charset=UTF-8");

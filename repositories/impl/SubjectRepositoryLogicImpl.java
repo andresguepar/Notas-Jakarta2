@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubjectRepositoryLogicImpl implements SubjectRepository<Subject> {
-    private List<Subject> subjects;
+    private final List<Subject> subjects;
 
     public SubjectRepositoryLogicImpl() {
         Subject s1 = new Subject(1L,"Art",new Teacher());

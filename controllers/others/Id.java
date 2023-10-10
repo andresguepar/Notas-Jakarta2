@@ -2,9 +2,8 @@ package com.example.notasjakarta.controllers.others;
 
 import com.example.notasjakarta.exceptions.UniversityException;
 import com.example.notasjakarta.mapping.dtos.StudentDto;
-import com.example.notasjakarta.repositories.impl.StudentRepositoryLogicImpl;
 import com.example.notasjakarta.services.StudentService;
-import com.example.notasjakarta.services.impl.StudentServiceImpl;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,17 +12,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 
 @WebServlet(name = "id", value = "/id")
 public class Id extends HttpServlet {
-    private StudentRepositoryLogicImpl studentRepository;
+    @Inject
     private StudentService service;
-
-    public Id() {
-        studentRepository = new StudentRepositoryLogicImpl();
-        service = new StudentServiceImpl((Connection) studentRepository);
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException,

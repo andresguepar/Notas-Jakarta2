@@ -5,12 +5,10 @@ import com.example.notasjakarta.mapping.dtos.SubjectDto;
 import com.example.notasjakarta.mapping.dtos.TeacherDto;
 import com.example.notasjakarta.mapping.mapper.SubjectMapper;
 import com.example.notasjakarta.mapping.mapper.TeacherMapper;
-import com.example.notasjakarta.repository.impl.SubjectRepositoryImpl;
 import com.example.notasjakarta.services.SubjectService;
 import com.example.notasjakarta.services.TeacherService;
-import com.example.notasjakarta.services.impl.SubjectServiceImpl;
-import com.example.notasjakarta.services.impl.TeacherServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,23 +18,20 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @WebServlet(name = "subjectController", value = "/subject-form")
 public class SubjectController extends HttpServlet {
+    @Inject
     private TeacherService serviceT;
-    private SubjectRepositoryImpl repository;
+    @Inject
     private SubjectService service;
 
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
-        Connection conn = (Connection) request.getAttribute("conn");
-        SubjectService service = new SubjectServiceImpl(conn);
-
 
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
@@ -49,21 +44,14 @@ public class SubjectController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
 
-        Connection conn = (Connection) req.getAttribute("conn");
-
-        TeacherServiceImpl teacherService = new TeacherServiceImpl(conn);
-
         /*ServletInputStream JsonStream = req.getInputStream();
 
         ObjectMapper mapper = new ObjectMapper();
         SubjectDto subject = mapper.readValue(JsonStream, SubjectDto.class);*/
 
         String name = req.getParameter("name");
-        String teacherName = req.getParameter("teacher");
+        String teacherName = req.getParameter("teachers");
         Map<String, String> errorsmap = getErrors(name, teacherName);
-
-        repository = new SubjectRepositoryImpl(conn);
-        service = new SubjectServiceImpl(conn);
 
         if(errorsmap.isEmpty()) {
 
@@ -106,19 +94,11 @@ public class SubjectController extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        Connection conn = (Connection) req.getAttribute("conn");
-
-        repository = new SubjectRepositoryImpl(conn);
-        service = new SubjectServiceImpl(conn);
-        TeacherServiceImpl teacherService = new TeacherServiceImpl(conn);
 
         ServletInputStream JsonStream = req.getInputStream();
-
         ObjectMapper mapper = new ObjectMapper();
+
         SubjectDto subject = mapper.readValue(JsonStream, SubjectDto.class);
-
-        SubjectService service = new SubjectServiceImpl(conn);
-
 
         /*Long id = Long.valueOf(req.getParameter("id"));
         String name = req.getParameter("name");
@@ -158,12 +138,9 @@ public class SubjectController extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        Connection conn = (Connection) req.getAttribute("conn");
+
         ServletInputStream JsonStream = req.getInputStream();
-
         ObjectMapper mapper = new ObjectMapper();
-
-        SubjectService service = new SubjectServiceImpl(conn);
 
         SubjectDto subject = mapper.readValue(JsonStream, SubjectDto.class);
         Long id = subject.id();
@@ -171,10 +148,10 @@ public class SubjectController extends HttpServlet {
         service.delete(id);
 
     }
-    private TeacherDto getTeacherByName(String teacher){
-        List<TeacherDto> teachers = serviceT.list();
-        return teachers.stream()
-                .filter(e->e.name().equalsIgnoreCase(teacher))
+    private TeacherDto getTeacherByName(String name){
+        List<TeacherDto> teacher = serviceT.list();
+        return teacher .stream()
+                .filter(e->e.name().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
 
@@ -184,7 +161,7 @@ public class SubjectController extends HttpServlet {
         if(name==null || name.isBlank()){
             errors.put("name","El nombre es requerido");
         }
-        if(teacher==null || teacher.isBlank()){
+        if(teacher==null || teacher.isBlank() || teacher == "--select--" ){
             errors.put("teacher","El teacher es requerido");
         }
         return errors;

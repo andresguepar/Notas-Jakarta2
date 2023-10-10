@@ -1,14 +1,18 @@
 package com.example.notasjakarta.domain.model;
 
+import jakarta.enterprise.context.SessionScoped;
 import lombok.*;
 
+import java.io.Serializable;
+
+@SessionScoped
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Builder
-public class Teacher {
+public class Teacher implements Serializable {
     private Long id;
     private String name;
     private String email;

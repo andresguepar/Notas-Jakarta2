@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentRepositoryLogicImpl implements StudentRepository<Student>{
-    private List<Student> students;
+    private final List<Student> students;
 
     public StudentRepositoryLogicImpl() {
         Student s1 = new Student(1L,"Lexa","lexa@email.com","1" );

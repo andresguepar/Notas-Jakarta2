@@ -7,10 +7,9 @@ import com.example.notasjakarta.services.LoginService;
 import com.example.notasjakarta.services.StudentService;
 import com.example.notasjakarta.services.SubjectService;
 import com.example.notasjakarta.services.TeacherService;
-import com.example.notasjakarta.services.impl.LoginServiceImpl;
-import com.example.notasjakarta.services.impl.StudentServiceImpl;
-import com.example.notasjakarta.services.impl.SubjectServiceImpl;
-import com.example.notasjakarta.services.impl.TeacherServiceImpl;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
@@ -20,14 +19,23 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
-
+@RequestScoped
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     final static String USERNAME = "admin";
     final static String PASSWORD = "12345";
+    @Inject
+    @Named("login")
+    private LoginService auth;
+    @Inject
+    private TeacherService serviceT;
+    @Inject
+    private SubjectService serviceS;
+    @Inject
+    private StudentService serviceSt;
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
             IOException {
@@ -38,20 +46,14 @@ public class LoginServlet extends HttpServlet {
             Cookie usernameCookie = new Cookie("username", username);
             resp.addCookie(usernameCookie);
 
-            Connection conn = (Connection) req.getAttribute("conn");
-            TeacherService service = new TeacherServiceImpl(conn);
-            List<TeacherDto> teacherDtoList = service.list();
+            List<TeacherDto> teacherDtoList = serviceT.list();
             getServletContext().setAttribute("teacherDtoList", teacherDtoList);
 
-            SubjectService serviceS = new SubjectServiceImpl(conn);
             List<SubjectDto> subjectDtoList = serviceS.list();
             getServletContext().setAttribute("subjectDtoList", subjectDtoList);
 
-            StudentService serviceSt = new StudentServiceImpl(conn);
             List<StudentDto> studentDtoList = serviceSt.list();
             getServletContext().setAttribute("studentDtoList", studentDtoList);
-
-
 
             try (PrintWriter out = resp.getWriter()) {
                 out.println("<!DOCTYPE html>");
@@ -74,7 +76,7 @@ public class LoginServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws
             ServletException, IOException {
-        LoginService auth = new LoginServiceImpl();
+
         Optional<String> cookieOptional = auth.getUsername(req);
         if (cookieOptional.isPresent()) {
             resp.setContentType("text/html;charset=UTF-8");

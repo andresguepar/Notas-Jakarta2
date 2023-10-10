@@ -1,10 +1,9 @@
 package com.example.notasjakarta.controllers.teacher;
 
 import com.example.notasjakarta.mapping.dtos.TeacherDto;
-import com.example.notasjakarta.repository.impl.TeacherRepositoryImpl;
 import com.example.notasjakarta.services.TeacherService;
-import com.example.notasjakarta.services.impl.TeacherServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,24 +13,16 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 
 @WebServlet(name = "teacherById", value = "/teacher-formById")
 public class TeacherById extends HttpServlet {
-    private TeacherRepositoryImpl repository;
+    @Inject
     private TeacherService service;
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        Connection conn = (Connection) req.getAttribute("conn");
-        repository = new TeacherRepositoryImpl(conn);
-        service = new TeacherServiceImpl(conn);
         ServletInputStream JsonStream = req.getInputStream();
-
         ObjectMapper mapper = new ObjectMapper();
-
-        TeacherService service = new TeacherServiceImpl(conn);
 
         TeacherDto teacher = mapper.readValue(JsonStream, TeacherDto.class);
         Long id = teacher.id();

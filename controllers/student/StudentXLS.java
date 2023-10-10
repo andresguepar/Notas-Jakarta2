@@ -1,9 +1,8 @@
 package com.example.notasjakarta.controllers.student;
 
 import com.example.notasjakarta.mapping.dtos.StudentDto;
-import com.example.notasjakarta.repository.impl.StudentRepositoryImpl;
 import com.example.notasjakarta.services.StudentService;
-import com.example.notasjakarta.services.impl.StudentServiceImpl;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,22 +11,16 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.List;
 
 @WebServlet({"/students.xls", "/students.html", "/students"})
 
 public class StudentXLS extends HttpServlet {
-    private StudentRepositoryImpl repository;
+    @Inject
     private StudentService service;
-
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
             IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        repository = new StudentRepositoryImpl(conn);
-        service = new StudentServiceImpl(conn);
         List<StudentDto> students = service.list();
         resp.setContentType("text/html;charset=UTF-8");
         String servletPath = req.getServletPath();

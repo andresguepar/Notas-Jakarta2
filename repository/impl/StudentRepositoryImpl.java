@@ -1,22 +1,23 @@
 package com.example.notasjakarta.repository.impl;
 
 
+import com.example.notasjakarta.annotations.MysqlConn;
 import com.example.notasjakarta.domain.model.Student;
 import com.example.notasjakarta.mapping.dtos.StudentDto;
 import com.example.notasjakarta.mapping.mapper.StudentMapper;
 import com.example.notasjakarta.repository.Repository;
 import com.example.notasjakarta.services.impl.ServiceJdbcException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@ApplicationScoped
 public class StudentRepositoryImpl implements Repository<StudentDto> {
+    @Inject
+    @MysqlConn
     private Connection conn;
-
-    public StudentRepositoryImpl(Connection conn) {
-        this.conn = conn;
-    }
 
     private StudentDto createStudents(ResultSet resultSet) throws
             SQLException {

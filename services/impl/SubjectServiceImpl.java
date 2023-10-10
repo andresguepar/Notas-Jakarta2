@@ -1,18 +1,16 @@
 package com.example.notasjakarta.services.impl;
 
 import com.example.notasjakarta.mapping.dtos.SubjectDto;
-import com.example.notasjakarta.repository.impl.SubjectRepositoryImpl;
+import com.example.notasjakarta.repository.Repository;
 import com.example.notasjakarta.services.SubjectService;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
-import java.sql.Connection;
 import java.util.List;
-
+@ApplicationScoped
 public class SubjectServiceImpl implements SubjectService {
-    private final SubjectRepositoryImpl repository;
-
-    public SubjectServiceImpl(Connection connection) {
-        this.repository = new SubjectRepositoryImpl(connection);
-    }
+    @Inject
+    private Repository<SubjectDto> repository;
     @Override
     public List<SubjectDto> list() {
         return repository.list();

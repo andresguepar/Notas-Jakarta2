@@ -2,7 +2,6 @@ package com.example.notasjakarta.services.impl;
 
 import com.example.notasjakarta.services.LoginService;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 

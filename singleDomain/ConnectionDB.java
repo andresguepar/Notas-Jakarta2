@@ -2,9 +2,6 @@ package com.example.notasjakarta.singleDomain;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 public class ConnectionDB {
     private static final String url = "jdbc:mysql://localhost:3306/notas";
     private static final String username = "root";

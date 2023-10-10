@@ -1,6 +1,5 @@
 package com.example.notasjakarta.services;
 
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Optional;

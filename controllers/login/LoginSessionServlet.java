@@ -57,7 +57,7 @@ public class LoginSessionServlet extends HttpServlet {
                 out.println("<p><a href='" + req.getContextPath() +
                         "/index.html'>volver</a></p>");
                 out.println("<p><a href='" + req.getContextPath() +
-                        "/logout'>cerrar sesión</a></p>");
+                          "/logout'>cerrar sesión</a></p>");
                 out.println(" </body>");
                 out.println("</html>");
             }
